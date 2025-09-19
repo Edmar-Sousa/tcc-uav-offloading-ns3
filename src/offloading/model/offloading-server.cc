@@ -39,7 +39,7 @@ OffloadingServerApplication::StartApplication()
     ns3::UdpSocketFactory::GetTypeId()
   );
 
-  address = this->getAddressAssociateNode();
+  address = ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(), port);
 
 
   socket->Bind(address);
@@ -90,7 +90,7 @@ OffloadingServerApplication::handlerReceivedPacket(ns3::Ptr<ns3::Socket> socket)
   ns3::Ptr<ns3::Packet> packet;
   ns3::Address from;
 
-  while ((packet = socket->Recv()))
+  while ((packet = socket->RecvFrom(from)))
   {
     this->printReceivedPacket(from, packet);
   }

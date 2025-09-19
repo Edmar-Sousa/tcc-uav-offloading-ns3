@@ -87,14 +87,15 @@ OffloadingClientApplication::ScheduleTx()
 void
 OffloadingClientApplication::SendPacket()
 {
-  ns3::InetSocketAddress to = this->algorithm->offloadingDecision();
+  ns3::Ipv4Address address = this->algorithm->offloadingDecision();
+  ns3::InetSocketAddress addressToSend = ns3::InetSocketAddress(address, port);
 
   NS_LOG_INFO(
-    "Client send packet with size of " << packetSize << " to " << ns3::InetSocketAddress::ConvertFrom(to).GetIpv4()
+    "Client send packet with size of " << packetSize << " to " << ns3::InetSocketAddress::ConvertFrom(addressToSend).GetIpv4()
   );
 
   ns3::Ptr<ns3::Packet> packet = ns3::Create<ns3::Packet>(packetSize);
-  socket->SendTo(packet, 0, to);
+  socket->SendTo(packet, 0, addressToSend);
 
   ScheduleTx();
 }

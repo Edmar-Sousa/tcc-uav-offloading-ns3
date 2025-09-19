@@ -13,7 +13,7 @@ class IOffloadingDecision
 
   public:
     virtual ~IOffloadingDecision() {};
-    virtual ns3::InetSocketAddress offloadingDecision() = 0;
+    virtual ns3::Ipv4Address offloadingDecision() = 0;
 };
 
 };

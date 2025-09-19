@@ -15,7 +15,7 @@ public:
     FIFOAlgorithm();
     ~FIFOAlgorithm();
 
-    ns3::InetSocketAddress offloadingDecision() override;
+    ns3::Ipv4Address offloadingDecision() override;
 };
 
 /**
