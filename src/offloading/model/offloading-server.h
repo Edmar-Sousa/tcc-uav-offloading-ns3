@@ -25,7 +25,7 @@ private:
   void printReceivedPacket(const ns3::Address & from, ns3::Ptr<ns3::Packet> packet);
 
 
-  ns3::Address getAddressAssociateNode();
+  ns3::InetSocketAddress getAddressAssociateNode() const;
 
 public:
 

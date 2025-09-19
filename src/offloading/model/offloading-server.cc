@@ -19,15 +19,14 @@ OffloadingServerApplication::~OffloadingServerApplication()
 }
 
 
-ns3::Address
-OffloadingServerApplication::getAddressAssociateNode()
+ns3::InetSocketAddress
+OffloadingServerApplication::getAddressAssociateNode() const
 {
-  ns3::Ptr<ns3::Ipv4> ipv4 = this->GetNode()->GetObject<ns3::Ipv4>();
-  ns3::Ipv4Address ipv4Address = ipv4->GetAddress(1, 0).GetLocal();
-
-  NS_LOG_DEBUG("Server get address associate node " << ipv4Address);
-
-  return ns3::InetSocketAddress(ipv4Address, port);
+  ns3::Ipv4Address addressAny = ns3::Ipv4Address::GetAny();
+  
+  NS_LOG_DEBUG("Server get address associate node " << addressAny);
+  
+  return ns3::InetSocketAddress(addressAny, port);
 }
 
 void
@@ -39,10 +38,8 @@ OffloadingServerApplication::StartApplication()
     ns3::UdpSocketFactory::GetTypeId()
   );
 
-  address = ns3::InetSocketAddress(ns3::Ipv4Address::GetAny(), port);
 
-
-  socket->Bind(address);
+  socket->Bind(this->getAddressAssociateNode());
   socket->SetAllowBroadcast(true);
   socket->SetRecvCallback(
     ns3::MakeCallback(&OffloadingServerApplication::handlerReceivedPacket, this)
@@ -54,7 +51,7 @@ OffloadingServerApplication::StartApplication()
 void
 OffloadingServerApplication::StopApplication()
 {
-  NS_LOG_DEBUG("Server with address " << ns3::InetSocketAddress::ConvertFrom(address).GetIpv4() << " stopped");
+  NS_LOG_DEBUG("Server with address " << this->getAddressAssociateNode() << " stopped");
 
   if (socket)
   {
@@ -92,7 +89,7 @@ OffloadingServerApplication::handlerReceivedPacket(ns3::Ptr<ns3::Socket> socket)
 
   while ((packet = socket->RecvFrom(from)))
   {
-    this->printReceivedPacket(from, packet);
+    // this->printReceivedPacket(from, packet);
   }
 }
 
