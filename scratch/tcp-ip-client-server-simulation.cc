@@ -3,6 +3,7 @@
 #include "ns3/network-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/point-to-point-module.h"
+#include "ns3/csma-module.h"
 
 
 #include "ns3/offloading-server.h"
@@ -25,16 +26,14 @@ int main()
 {
     const int number_nodes = 2;
 
+    ns3::LogComponentEnable("OffloadingServerApplication", ns3::LOG_LEVEL_ALL);
+    ns3::LogComponentEnable("OffloadingClientApplication", ns3::LOG_LEVEL_ALL);
+
     ns3::NodeContainer nodes;
     nodes.Create(number_nodes);
 
-
-    ns3::PointToPointHelper pointToPoint;
-    pointToPoint.SetDeviceAttribute("DataRate", ns3::StringValue("5Mbps"));
-    pointToPoint.SetChannelAttribute("Delay", ns3::StringValue("2ms"));
-
-
-    ns3::NetDeviceContainer devices = pointToPoint.Install(nodes);
+    ns3::CsmaHelper csma;
+    ns3::NetDeviceContainer devices = csma.Install(nodes);
 
 
     ns3::InternetStackHelper stack;
