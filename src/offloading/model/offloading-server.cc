@@ -46,7 +46,7 @@ OffloadingServerApplication::StopApplication()
 
   if (socket)
   {
-    NS_LOG_DEBUG("At time " << ns3::Simulator::Now().GetSeconds() << "s server socket closed");
+    NS_LOG_INFO("At time " << ns3::Simulator::Now().GetSeconds() << "s server socket closed");
     socket->Close();
   }
 }
