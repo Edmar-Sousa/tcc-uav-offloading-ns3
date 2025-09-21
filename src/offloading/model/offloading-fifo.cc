@@ -17,6 +17,7 @@ namespace Algorithm {
     ns3::Ipv4Address
     FIFOAlgorithm::offloadingDecision()
     {
+        // return ns3::Ipv4Address::GetBroadcast();
         return ns3::Ipv4Address("10.0.0.1");
     }
 }
