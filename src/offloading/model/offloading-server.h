@@ -16,16 +16,11 @@ private:
   uint16_t port;
 
   ns3::Ptr<ns3::Socket> socket;
-  ns3::Address address;
 
   void StartApplication() override;
   void StopApplication() override;
 
   void handlerReceivedPacket(ns3::Ptr<ns3::Socket> socket);
-  void printReceivedPacket(const ns3::Address & from, ns3::Ptr<ns3::Packet> packet);
-
-
-  ns3::InetSocketAddress getAddressAssociateNode() const;
 
 public:
 
