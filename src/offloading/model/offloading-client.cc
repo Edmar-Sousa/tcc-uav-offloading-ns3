@@ -11,7 +11,6 @@ OffloadingClientApplication::OffloadingClientApplication():
   isRunning(false),
   port(5000),
   packetSize(1024),
-  address(),
   intervalSendPacket(ns3::Seconds(1.0)),
   socket(0)
 {
@@ -20,19 +19,6 @@ OffloadingClientApplication::OffloadingClientApplication():
 OffloadingClientApplication::~OffloadingClientApplication()
 {
   socket = 0;
-}
-
-
-// TODO: change this function to using on server and client
-ns3::Address
-OffloadingClientApplication::getAddressAssociateNode()
-{
-  ns3::Ptr<ns3::Ipv4> ipv4 = this->GetNode()->GetObject<ns3::Ipv4>();
-  ns3::Ipv4Address ipv4Address = ipv4->GetAddress(1, 0).GetLocal();
-
-  NS_LOG_DEBUG("Client get address associate node " << ipv4Address);
-
-  return ns3::InetSocketAddress(ipv4Address, port);
 }
 
 void
@@ -45,8 +31,6 @@ OffloadingClientApplication::StartApplication()
     ns3::UdpSocketFactory::GetTypeId()
   );
 
-  address = this->getAddressAssociateNode();
-
   socket->Bind();
   SendPacket();
 }
@@ -54,7 +38,7 @@ OffloadingClientApplication::StartApplication()
 void
 OffloadingClientApplication::StopApplication()
 {
-    NS_LOG_DEBUG("Client stopped application");
+    NS_LOG_DEBUG("At time " << ns3::Simulator::Now().GetSeconds() << "s client stop the application");
     isRunning = false;
 
     if (eventSendPacket.IsPending())
@@ -62,7 +46,7 @@ OffloadingClientApplication::StopApplication()
 
     if (socket)
     {
-      NS_LOG_INFO("Client closed the socket");
+      NS_LOG_INFO("At time " << ns3::Simulator::Now().GetSeconds() << "s client close socket");
       socket->Close();
     }
 }
@@ -76,9 +60,7 @@ OffloadingClientApplication::SetDecisionAlgorithm(std::shared_ptr<IOffloadingDec
 void
 OffloadingClientApplication::ScheduleTx() 
 {
-  NS_LOG_INFO(
-    "Schedule transmission packets"
-  );
+  NS_LOG_DEBUG("At time " << ns3::Simulator::Now().GetSeconds() << "s client schedule transmission packet");
 
   if (isRunning)
     eventSendPacket = ns3::Simulator::Schedule(intervalSendPacket, &OffloadingClientApplication::SendPacket, this);

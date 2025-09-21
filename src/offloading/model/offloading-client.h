@@ -22,7 +22,6 @@ class OffloadingClientApplication : public ns3::Application
 
     std::shared_ptr<IOffloadingDecision> algorithm;
 
-    ns3::Address address;
     ns3::Time intervalSendPacket;
     ns3::EventId eventSendPacket;
     ns3::Ptr<ns3::Socket> socket;
